@@ -3,10 +3,6 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-// Hello
-app.get('/hello', (req, res) => {
- res.send('Hello World');
-});
 
 //Servidor
 let porta = 8080;
@@ -42,7 +38,7 @@ app.post('/Cadastro', (req, res, next) => {
         "cpf": req.body.cpf
      });
     db.insertOne(cliente, (err, result) => {
-        if (err) return console.log("Error: " + err);
+        if (err) return console.log("Error: meu piru" + err);
         console.log('Cliente cadastrado com sucesso!');
         res.send('Cliente cadastrado com sucesso!');
     });

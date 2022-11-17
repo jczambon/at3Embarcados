@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const CadastroSchema = new Schema({
  numero: {
-  type: int, 
+  type: Number, 
   required: [true, 'Numero Obrigatório'], 
   max: 100
  },
@@ -18,4 +18,4 @@ const CadastroSchema = new Schema({
    },
  });
 // Exportar o modelo
-module.exports = mongoose.model('cadastro', CadastroSchema);
+module.exports = mongoose.model('vagas', CadastroSchema);

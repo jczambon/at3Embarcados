@@ -3,18 +3,14 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-// Hello
-app.get('/hello', (req, res) => {
- res.send('Hello World');
-});
 
 //Servidor
-let porta = 8080;
+let porta = 8090;
 app.listen(porta, () => {
  console.log('Servidor em execução na porta: ' + porta);
 });
 
-const Cadastro = require('./model/cadastro')
+const Cadastro = require('./model/vagas')
 
 //Acesso ao BD
 const MongoClient = require('mongodb').MongoClient;
@@ -34,7 +30,7 @@ MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (e
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.post('/Cadastro', (req, res, next) => {
+app.post('/vagas', (req, res, next) => {
     var vaga = new Cadastro({
         "numero": req.body.nome,
         "coordenadas": req.body.coordenadas,
@@ -48,7 +44,7 @@ app.post('/Cadastro', (req, res, next) => {
 });
 
 // Obtém todos os cadastros
-app.get('/Cadastro', (req, res, next) => {
+app.get('/vagas', (req, res, next) => {
     db.find({}).toArray((err, result) => {
         if (err) return console.log("Error: " + err);
         res.send(result);
@@ -56,7 +52,7 @@ app.get('/Cadastro', (req, res, next) => {
 });
 
 // Obtém cadastro do usuário com base no CPF
-app.get('/Cadastro/:numero', (req, res, next) => {
+app.get('/vagas/:numero', (req, res, next) => {
     const result = db.findOne({ "numero": req.params.numero }, (err, result) => {
     if (err) return console.log("Vaga não encontrada")
     res.send(result);
@@ -64,7 +60,7 @@ app.get('/Cadastro/:numero', (req, res, next) => {
 });
 
 // Altera um cadastro
-app.put('/Cadastro/:numero', (req, res, next) => {
+app.put('/vagas/:numero', (req, res, next) => {
     db.updateOne({"numero": req.params.numero }, {
         $set: {
           "numero": req.body.numero,
@@ -78,7 +74,7 @@ app.put('/Cadastro/:numero', (req, res, next) => {
 });
 
 //Remover cadastro de usuário
-app.delete('/Cadastro/:numero', (req, res, next) => {
+app.delete('/vagas/:numero', (req, res, next) => {
     db.deleteOne({cpf: req.params.numero },(err, result) => {
         if (err) return console.log("Error: " + err);
         console.log('Cadastro da vaga removido!');
