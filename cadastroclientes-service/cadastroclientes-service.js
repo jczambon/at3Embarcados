@@ -38,7 +38,7 @@ app.post('/Cadastro', (req, res, next) => {
         "cpf": req.body.cpf
      });
     db.insertOne(cliente, (err, result) => {
-        if (err) return console.log("Error: meu piru" + err);
+        if (err) return console.log("Error:" + err);
         console.log('Cliente cadastrado com sucesso!');
         res.send('Cliente cadastrado com sucesso!');
     });
