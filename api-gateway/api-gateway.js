@@ -10,6 +10,10 @@ function selectProxyHost(req) {
         return 'http://localhost:8080/';
     else if (req.path.startsWith('/vagas'))
         return 'http://localhost:8090/';
+    else if (req.path.startsWith('/creditos'))              // add
+        return 'http://localhost:8100/';
+    else if (req.path.startsWith('/cobranca'))              // add
+        return 'http://localhost:8110/';
     else return null;
 }
 
