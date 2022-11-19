@@ -86,30 +86,37 @@ app.post('/creditos', async (req, res, next) => {
 
 // Atualiza a pontuação de uma conta
 app.put('/creditos/:cpf', async (req, res, next) => {
-    const result = await new Promise((resolve, reject) => {     // checa se a conta já existe
-        db.findOne({ "cpf": req.params.cpf }, (err, result) => {
-            if (result) {resolve(result); return }
-            resolve(0)
+    if (Number(req.body.creditos)) {
+        const result = await new Promise((resolve, reject) => {     // checa se a conta já existe
+            db.findOne({ "cpf": req.params.cpf }, (err, result) => {
+                if (result) {resolve(result); return }
+                resolve(0)
 
+            })
         })
-    })
 
-    if (result){
-        var credito_atual = result.creditos
-        var novos_creditos = Number(req.body.creditos)
-        if ((credito_atual + novos_creditos) < 0){
-            return res.send(`Usuário não tem créditos o suficiente (${result.creditos})!`);
+        if (result){
+            var credito_atual = result.creditos
+            var novos_creditos = Number(req.body.creditos)
+            if ((credito_atual + novos_creditos) < 0){
+                return res.send({"msg": `Usuário não tem créditos o suficiente (${result.creditos})!`, "status": 0});
+            }
+            db.updateOne({"cpf": req.params.cpf }, {            //creditos podem ser positivos ou negativos
+                $set: {
+                "creditos": credito_atual + novos_creditos
+            }
+            }, (err, result) => {
+                if (err) return console.log("Error: " + err);
+                console.log(`Creditos de usuário atualizados com sucesso no BD! ${credito_atual} => ${credito_atual + novos_creditos}`);
+                return res.send({"msg": `Creditos de usuário atualizados com sucesso no BD! ${credito_atual} => ${credito_atual + novos_creditos}`, "status": 1});
+            });
+        } else {
+            return res.send({"msg": `CPF não encontrado`, "status": 0});
         }
-        db.updateOne({"cpf": req.params.cpf }, {            //creditos podem ser positivos ou negativos
-            $set: {
-            "creditos": credito_atual + novos_creditos
-        }
-        }, (err, result) => {
-            if (err) return console.log("Error: " + err);
-            console.log(`Creditos de usuário atualizados com sucesso no BD! ${credito_atual} => ${credito_atual + novos_creditos}`);
-            res.send(`Creditos de usuário atualizados com sucesso no BD! ${credito_atual} => ${credito_atual + novos_creditos}`);
-        });
+    } else {
+        return res.send({"msg": `Credito precisa ser numérico`, "status": 0});
     }
+
 });
 
 
