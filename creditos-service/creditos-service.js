@@ -114,8 +114,9 @@ app.put('/creditos/:cpf', async (req, res, next) => {
 
 
 // Remove conta de pontos de um cliente
-app.delete('/creditos/:cpf', async (req, res, next) => {
+app.delete('/creditos/:cpf', (req, res, next) => {
     db.deleteOne({"cpf": req.params.cpf}, (err, result) => {
+        console.log(result)
         if (err) return console.log("Error: " + err);
         console.log('Conta de creditos do usuário excluída com sucesso no BD!');
         res.send('Conta de creditos do usuário excluída com sucesso no BD!');

@@ -53,8 +53,8 @@ app.get('/vagas', (req, res, next) => {
 
 // Obtém cadastro do usuário com base no CPF
 app.get('/vagas/:numero', (req, res, next) => {
-    const result = db.findOne({ "numero": req.params.numero }, (err, result) => {
-    if (err) return console.log("Vaga não encontrada")
+    const result = db.findOne({ "numero": Number(req.params.numero) }, (err, result) => {
+    if (err) return console.log("Vaga não encontrada");
     res.send(result);
     });
 });
