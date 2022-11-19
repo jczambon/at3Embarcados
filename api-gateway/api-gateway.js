@@ -14,6 +14,8 @@ function selectProxyHost(req) {
         return 'http://localhost:8100/';
     else if (req.path.startsWith('/cobranca'))              // add
         return 'http://localhost:8110/';
+    else if (req.path.startsWith('/statusvagas'))              // add
+        return 'http://localhost:8120/';
     else return null;
 }
 
