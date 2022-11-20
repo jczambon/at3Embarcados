@@ -9,7 +9,7 @@ const ControleVagasSchema = new Schema({
         type: String, 
         required: [true, 'CPF Obrigatório']},
     hora_entrada: {
-        type: Date, 
+        type: String, 
         required: [true, 'Hora Obrigatória']},
 });
 // Exportar o modelo
