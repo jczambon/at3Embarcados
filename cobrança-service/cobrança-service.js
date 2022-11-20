@@ -56,7 +56,7 @@ app.post('/cobranca', async (req, res, next) => {
 
     preço = preço.preço * horas
 
-    let cobrança = await instAxios.put(`/creditos/${req.body.cpf}` , {"creditos": -preço }).then((resp) => {  
+    let cobrança = await instAxios.put(`/creditos/${req.body.cpf}` , {"creditos": Number(-preço) }).then((resp) => {  
         return resp.data
     })
 

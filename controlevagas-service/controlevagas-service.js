@@ -103,7 +103,7 @@ app.delete('/controlevagas/:numero', async (req, res, next) => {
         return resp.data
         });
 
-    let cobrar = await instAxios.post(`/cobranca` , {hora_entrada : vaga.hora_entrada , cpf: vaga.cpf}).then((resp) => {  
+    let cobrar = await instAxios.post(`/cobranca` , {"hora_entrada" : vaga.hora_entrada , "cpf": vaga.cpf}).then((resp) => {  
         return resp.data
         });
 
