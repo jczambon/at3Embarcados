@@ -16,9 +16,9 @@ app.listen(porta, () => {
 });
 
 const MongoClient = require('mongodb').MongoClient;
-const uri = 'mongodb+srv://pedrocaninas:1234@cluster0.kawxe5x.mongodb.net/?retryWrites=true&w=majority';  // mudar
-const database_name = 'BaseAtividadeBackEnd';                                                             // mudar
-const collection_name= 'HistoricoCobrança'                                                                   // mudar
+const uri = 'mongodb+srv://jcz:17022003Aa@cluster0.gkmwloj.mongodb.net/?retryWrites=true&w=majority';  // mudar
+const database_name = 'ZonaAzulDB';                                                             // mudar
+const collection_name= 'Cobranca'                                                                   // mudar
 var db;
 
 MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (error, client) => {
@@ -52,7 +52,7 @@ app.post('/cobranca', async (req, res, next) => {
     let preço = await db.findOne({ "id": "preço"})    // pega o preço atual
     let hora_atual = Date.now()
 
-    let horas = Math.ceil((hora_atual - req.body.hora_inicial) / 1000 / 60 / 60) // cobra fração de hora como hora completa
+    let horas = Math.ceil((hora_atual - req.body.hora_entrada) / 1000 / 60 / 60) // cobra fração de hora como hora completa
 
     preço = preço.preço * horas
 
@@ -64,7 +64,7 @@ app.post('/cobranca', async (req, res, next) => {
         let hist_cobra = new HistoricoCobrança({
             cpf: req.body.cpf,
             vaga: 1,
-            hora_entrada: req.body.hora_inicial,
+            hora_entrada: req.body.hora_entrada,
             hora_saida: hora_atual,
             custo: preço
 

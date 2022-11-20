@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.post('/vagas', (req, res, next) => {
     var vaga = new Cadastro({
-        "numero": req.body.nome,
+        "numero": req.body.numero,
         "coordenadas": req.body.coordenadas,
         "local": req.body.local,
      });
@@ -51,9 +51,9 @@ app.get('/vagas', (req, res, next) => {
     });
 });
 
-// Obtém cadastro do usuário com base no CPF
+// Obtém cadastro do usuário com base no número
 app.get('/vagas/:numero', (req, res, next) => {
-    const result = db.findOne({ "numero": Number(req.params.numero) }, (err, result) => {
+    const result = db.findOne({ "numero": (req.params.numero) }, (err, result) => {
     if (err) return console.log("Vaga não encontrada");
     res.send(result);
     });
@@ -73,9 +73,9 @@ app.put('/vagas/:numero', (req, res, next) => {
     });
 });
 
-//Remover cadastro de usuário
+//Remover cadastro de vaga
 app.delete('/vagas/:numero', (req, res, next) => {
-    db.deleteOne({cpf: req.params.numero },(err, result) => {
+    db.deleteOne({numero: req.params.numero },(err, result) => {
         if (err) return console.log("Error: " + err);
         console.log('Cadastro da vaga removido!');
         res.send('Cadastro da vaga removido!');

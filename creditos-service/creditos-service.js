@@ -17,9 +17,9 @@ app.listen(porta, () => {
 
 
 const MongoClient = require('mongodb').MongoClient;
-const uri = 'mongodb+srv://pedrocaninas:1234@cluster0.kawxe5x.mongodb.net/?retryWrites=true&w=majority';  // mudar
-const database_name = 'BaseAtividadeBackEnd';                                                             // mudar
-const collection_name= 'ContasCreditos'                                                                   // mudar
+const uri = 'mongodb+srv://jcz:17022003Aa@cluster0.gkmwloj.mongodb.net/?retryWrites=true&w=majority';  // mudar
+const database_name = 'ZonaAzulDB';                                                             // mudar
+const collection_name= 'ControleCreditos'                                                                   // mudar
 var db;
 
 MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (error, client) => {

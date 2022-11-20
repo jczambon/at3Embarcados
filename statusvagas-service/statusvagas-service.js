@@ -17,9 +17,9 @@ app.listen(porta, () => {
 
 
 const MongoClient = require('mongodb').MongoClient;
-const uri = 'mongodb+srv://pedrocaninas:1234@cluster0.kawxe5x.mongodb.net/?retryWrites=true&w=majority';  // mudar
-const database_name = 'BaseAtividadeBackEnd';                                                             // mudar
-const collection_name= 'StatusVagas'                                                                   // mudar
+const uri = 'mongodb+srv://jcz:17022003Aa@cluster0.gkmwloj.mongodb.net/?retryWrites=true&w=majority';  // mudar
+const database_name = 'ZonaAzulDB';                                                             // mudar
+const collection_name= 'EstadoVagas'                                                                   // mudar
 var db;
 
 MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (error, client) => {
@@ -46,9 +46,9 @@ app.get('/statusvagas', (req, res, next) => {
 // Retorna status de uma vaga, se existir
 app.get('/statusvagas/num/:numero', (req, res, next) => {
     console.log(typeof(req.params.numero))
-    db.findOne({ "numero": Number(req.params.numero) }, async (err, result) => {
+    db.findOne({ "numero": req.params.numero }, async (err, result) => {
         if (!result) {
-            let resposta = await instAxios.get(`/vagas/${Number(req.params.numero)}`).then((resp) => {    // checa se existe usuario com aquele cpf
+            let resposta = await instAxios.get(`/vagas/${req.params.numero}`).then((resp) => {    // checa se existe usuario com aquele cpf
                 console.log(resp.data)
                 return resp.data
             })
@@ -82,7 +82,7 @@ app.get('/statusvagas/:local', async (req, res, next) => {
             }
 
             if (i.local == req.params.local) {
-                let r = await (db.findOne({ "numero": Number(i.numero)}))
+                let r = await (db.findOne({ "numero": i.numero}))
                 console.log(r)
                 if (r){
                     vagas.push(r)
@@ -117,7 +117,7 @@ app.put('/statusvagas/:numero', async (req, res, next) => {
                 if (err) return console.log("Error: " + err);
             });
         } else {
-            await db.updateOne({ "numero": Number(vaga.numero) }, {
+            await db.updateOne({ "numero": vaga.numero }, {
                 $set: {
                     "status": req.body.status
             }})
@@ -131,7 +131,7 @@ app.put('/statusvagas/:numero', async (req, res, next) => {
 
 // Remove vaga status
 app.delete('/statusvagas/:numero', (req, res, next) => {
-    db.deleteOne({"numero": Number(req.params.numero)}, (err, result) => {
+    db.deleteOne({"numero": req.params.numero}, (err, result) => {
         console.log(result)
         if (err) return console.log("Error: " + err);
         console.log('Vaga excluída com sucesso no BD!');

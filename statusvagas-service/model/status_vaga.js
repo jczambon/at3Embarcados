@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const StatusVagaSchema = new Schema({
     numero: {
-        type: Number, 
+        type: String, 
         required: [true, 'Número Obrigatório']},
     status: {
         type: String, 
