@@ -50,12 +50,16 @@ app.get('/cobranca/:cpf', (req, res, next) => {
 // Cria uma nova cobrança
 app.post('/cobranca', async (req, res, next) => {
     let preço = await db.findOne({ "id": "preço"})    // pega o preço atual
+    console.log(preço);
     let hora_atual = Date.now()
 
-    let horas = Math.ceil((hora_atual - req.body.hora_entrada) / 1000 / 60 / 60) // cobra fração de hora como hora completa
-
+    let horas = Math.ceil((hora_atual - Number(req.body.hora_entrada)) / 1000 / 60 / 60) // cobra fração de hora como hora completa
+    console.log(hora_atual)
+    console.log(preço.preço);
     preço = preço.preço * horas
-
+    console.log(horas);
+    console.log(req.body.hora_entrada);
+    console.log(preço);
     let cobrança = await instAxios.put(`/creditos/${req.body.cpf}` , {"creditos": Number(-preço) }).then((resp) => {  
         return resp.data
     })
