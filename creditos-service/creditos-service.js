@@ -51,8 +51,7 @@ app.get('/creditos/:cpf', async (req, res, next) => {
 
     if (!result) {
         let resp = await instAxios.post("/creditos", {"cpf": req.params.cpf})
-        console.log(resp)
-        return res.send(resp)
+        return res.send(resp.data)
     }
     return res.send(result)
 });
