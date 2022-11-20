@@ -45,18 +45,26 @@ app.get('/statusvagas', (req, res, next) => {
 
 // Retorna status de uma vaga, se existir
 app.get('/statusvagas/num/:numero', (req, res, next) => {
-    console.log(typeof(req.params.numero))
     db.findOne({ "numero": req.params.numero }, async (err, result) => {
         if (!result) {
-            let resposta = await instAxios.get(`/vagas/${req.params.numero}`).then((resp) => {    // checa se existe usuario com aquele cpf
+            let resposta = await instAxios.get(`/vagas/${req.params.numero}`).then((resp) => { 
                 console.log(resp.data)
                 return resp.data
             })
-
-            return res.send(resposta);
+            console.log(resposta)
+            if (resposta) {
+                var statusvaga = new StatusVaga({
+                    "numero": resposta.numero,
+                    "status": "Livre"
+                });
+                db.insertOne(statusvaga, (err, result) => {
+                    if (err) return console.log("Error: " + err);
+                });
+                return res.send(statusvaga);
+            }
+        } else {
+            return res.send(result);
         }
-        console.log(err, result, "aqui")
-        res.send(result);
     });
 });
 

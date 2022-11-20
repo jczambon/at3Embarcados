@@ -43,11 +43,18 @@ app.get('/creditos', (req, res, next) => {
 });
 
 // Retorna uma conta de creditos associada a um CPF
-app.get('/creditos/:cpf', (req, res, next) => {
+app.get('/creditos/:cpf', async (req, res, next) => {
     const result = db.findOne({ "cpf": req.params.cpf }, (err, result) => {
     if (err) return console.log("Conta não encontrada")
-    res.send(result);
+    return result;
     });
+
+    if (!result) {
+        let resp = await instAxios.post("/creditos", {"cpf": req.params.cpf})
+        console.log(resp)
+        return res.send(resp)
+    }
+    return res.send(result)
 });
 
 // Cria uma nova conta de creditos
