@@ -98,21 +98,25 @@ app.delete('/controlevagas/:numero', async (req, res, next) => {
     });
     
     if (vaga != '') {
+        let troca_estado = await instAxios.put(`/statusvagas/${vaga.numero}` , {"status": "Livre" }).then((resp) => {  
+            return resp.data
+            });
 
-    let troca_estado = await instAxios.put(`/statusvagas/${vaga.numero}` , {"status": "Livre" }).then((resp) => {  
-        return resp.data
-        });
+        let cobrar = await instAxios.post(`/cobranca` , {"hora_entrada" : vaga.hora_entrada , "cpf": vaga.cpf}).then((resp) => {  
+            return resp.data
+            });
 
-    let cobrar = await instAxios.post(`/cobranca` , {"hora_entrada" : vaga.hora_entrada , "cpf": vaga.cpf}).then((resp) => {  
-        return resp.data
-        });
+        if (cobrar.cobrança.status) {
+            db.deleteOne({"numero": req.params.numero}, (err, result) => {
+                console.log(result)
+                if (err) return console.log("Error: " + err);
+                console.log('Vaga desocupada com sucesso no BD!');
+                res.send('Vaga desocupada com sucesso no BD!');
+            });
+        } else {
+            res.send(cobrar)
+        }
 
-    db.deleteOne({"numero": req.params.numero}, (err, result) => {
-        console.log(result)
-        if (err) return console.log("Error: " + err);
-        console.log('Vaga desocupada com sucesso no BD!');
-        res.send('Vaga desocupada com sucesso no BD!');
-    });
     } else {
         res.send('Vaga não ocupada')
     }
